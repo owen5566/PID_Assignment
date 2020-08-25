@@ -1,0 +1,6 @@
+INSERT INTO `products`(`pName`, `pPrice`, `pInventory`, `pInfo`) VALUES ("products01",100,100,"info1,gogogogogo;info2,kkkkkkk;info3;")
+INSERT INTO `products`(`pName`, `pPrice`, `pInventory`, `pInfo`) VALUES ("products02",1000,100,"info1,gogogogogo;info2,kkkkkkk;info3;")
+INSERT INTO `products`(`pName`, `pPrice`, `pInventory`, `pInfo`) VALUES ("products03",500,100,"info1,gogogogogo;info2,kkkkkkk;info3;")
+INSERT INTO `products`(`pName`, `pPrice`, `pInventory`, `pInfo`) VALUES ("products04",777,100,"info1,gogogogogo;info2,kkkkkkk;info3;")
+
+
