@@ -1,6 +1,7 @@
 <?php
   $userName = "Guest";
   $status = 0;
+  $debug="";
   session_start();
   if(isset($_SESSION["userName"])){
     $userName = $_SESSION["userName"];
@@ -24,7 +25,59 @@
       $cartArray[] = $row;
     }//print_r($cartArray);
   }
-  
+  /// new order
+  if (isset($_POST["orderBtn"])&&isset($cartArray)) {
+    $db->query("BEGIN");
+    $sqlOrder = $db->prepare("select uOrderIdx from userTable where uId = $userId");
+      if($sqlOrder->execute()){
+        $result = $sqlOrder->fetch();
+        echo $orderIdx =$userId.date("Ymd").(1000+$result["uOrderIdx"]);
+        //create order
+        $sqlOrder = $db->prepare("insert into orders (oId,uId,ship) values ($orderIdx,$userId,0)");
+          if($sqlOrder->execute()){
+            $debug = "create order success";
+            //create order details
+
+            foreach ($cartArray as $array) {
+                echo $insertPid = $array["pId"];
+                echo $insertUnitPrice = $array["pPrice"];
+                echo $insertQty = $array["qty"];
+                echo "<br>";
+                $sqlOrder = $db->prepare("insert into orderDetail (orderId,productId,unitPrice,qty) values ($orderIdx, $insertPid,$insertUnitPrice,$insertQty)");
+                if ($sqlOrder->execute()) {
+                    $debug = "create detail succes";
+                    $sqlOrder = $db->prepare("delete from cart where uId = $userId");
+                    if ($sqlOrder->execute()) {
+                        $debug = "drop cart";
+                        $sqlOrder = $db->prepare("UPDATE userTable set uOrderIdx = uOrderIdx + 1 where uId = $userId");
+                        if ($sqlOrder->execute()) {
+                            $debug = "all success";
+                            $cartArray=null;
+                            $db->query("commit");
+                        } else {
+                            $debug = "increase idx fail";
+                            $db->query("rollback");
+                        }
+                    } else {
+                        $debug = "drop cart fail";
+                        $db->query("rollback");
+                    }
+                } else {
+                    $debug = "creat detail fail";
+                    $db->query("rollback");
+                }
+            }
+          }else{
+            $debug = "create order fail";
+            $db->query("rollback");
+          }  
+      }else{
+        $debug = "query fail";
+        $db->query("rollback");
+      }
+  ///end of new order    
+
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,15 +168,23 @@
     }else{echo "購物車沒東西! 快去購物吧";}?>
     <!-- check Cart -->
     <div class="row">
-      <div class="col-6" style="background-color: floralwhite;height: 300px;"></div>
+      <div class="col-6" style="background-color: floralwhite;height: 300px;">
+      <div>debug here:<?=var_dump($debug)?></div>
+        
+      </div>
       <div class="col-6" style="background-color: gainsboro;height: 300px; padding: 20px;">
         <div class="row" ><div class="col" style="text-align: right;">subprice: <?= $subprice?></div></div>
         <div class="row" ><div class="col" style="text-align: right;">shipping</div></div>
         <div class="row" ><div class="col" style="text-align: right;">total</div></div>
-        <div class="row" ><div class="col" style="text-align: right;"><button class="btn">order</button></div></div>
+        <div class="row" ><div class="col" style="text-align: right;">
+          <form method  ="post">
+            <input  class="btn "type="submit" name ="orderBtn" value="ORDER"></input>  
+          </form>
+        </div></div>
       </div>
         
     </div>
   </div>
+  
 </body>
 </html>

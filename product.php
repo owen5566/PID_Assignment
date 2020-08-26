@@ -109,7 +109,7 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              <a class="nav-link disabled" href="admin/loginA.php" tabindex="-1" aria-disabled="true">Admin</a>
             </li>
           </ul>
           <span class="navbar-text" style="margin-right: 10px;">
@@ -139,7 +139,7 @@
         <div class="col-3" style="text-align: right;">Inventory:<?=$row["pInventory"]?></div>
           <div class="col" style="text-align: right;">
               <form method="post" >
-                <input type="number" name = "qty" style="width: 70px"></input>    
+                <input type="number" name = "qty" min="1" max="100" style="width: 70px"></input>    
                 <input class="btn btn-info" type="submit" name="btnAdd" value="ADD TO CART"></input>
               </form>
               <div><?=$addCartMsg?></div>

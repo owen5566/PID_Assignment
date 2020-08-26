@@ -4,8 +4,32 @@
   session_start();
   if(isset($_SESSION["userName"])){
     $userName = $_SESSION["userName"];
+    $userId = $_SESSION["userId"];
     $status = 1;
+  }else{
+    $_SESSION["location"]="memberPage.php";
+    header("location: login.php");
   }
+  require_once("newPDO.php");
+  $sql = $db->prepare("select * from orders  where uId = $userId");
+  $sql->execute();
+  while($row = $sql->fetch()){
+    $orderArray[] = $row;
+  }
+  if(isset($_POST["btnDetail"])){
+    $idx = $_POST["btnIndex"];
+    echo $orderArray[$idx][0];
+    $sqlD = $db->prepare("select od.*,p.pName from orderDetail od join products p on od.productId = p.pId where orderId = ".$orderArray[$idx][0]);
+    if($sqlD->execute()){
+       while ($row = $sqlD->fetch()) {
+           $detailArray[] = $row;
+       }
+       echo "detail query success";
+     }else{
+       echo "detail error";
+     }
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +73,7 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              <a class="nav-link disabled" href="admin/loginA.php" tabindex="-1" aria-disabled="true">Admin</a>
             </li>
           </ul>
           <span class="navbar-text" style="margin-right: 10px;">
@@ -62,12 +86,46 @@
       </nav><br>
     <!-- end of header -->
       <!-- sign up Input -->
-      <div class="row" style="margin: 20px;">
-          <div class = "col" >
-            <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;">MemberInfo</div>
-                
+      <div class="row" style="margin-top: 20px;">
+        <div class = "col" >
+          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">OrderInfo</div>
+             
+          
+       </div>
+      </div>
+    <?php if(isset($orderArray)){?>
+    <div class="row">
+      <div class="col-6" >
+      <?php $count=0; foreach ($orderArray as $array) {?>
+        <div class="row">
+          <div class="col-10">
+            <ul>
+                <li><?="訂單編號：".($array[0]);?></li>
+                <li><?="訂單時間：".$array[1]?></li>
+              </ul>
           </div>
-          <div class = 'col' style="background-color: antiquewhite;">
+          <div class="col-2">
+             <form method="post">
+               <input type="hidden" name="btnIndex" value="<?=$count?>">
+               <input class="btn mr-auto" type="submit" name="btnDetail" value="更多">
+            </form>
+          </div>
+        </div>
+        <?php $count++;}?>
+      </div>
+      <div class="col-6" style="border-style:ridge;">
+        <?php if (isset($detailArray)) {?>
+          <div class="row" style="margin:20px ;"><?="訂單編號：".($array[0]);?></div>
+          <div class="row" style="margin:20px">
+            <div class="col-6"><?= "商品名稱"?></div>
+            <div class="col-6"><?= "商品數量"?></div>
+        </div>
+        <?php foreach ($detailArray as $array) {?>
+          <div class="row" style="margin:20px">
+            <div class="col-6"><?= $array["pName"];?></div>
+            <div class="col-6"><?= $array["qty"];?></div>
+        </div>
+        <?php }}}else{echo "沒有任何訂單記錄";}?>
       </div>
     </div>
     
