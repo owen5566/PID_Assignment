@@ -1,6 +1,8 @@
 <?php
   $userName = "Guest";
   $status = 0;
+  $msg="";
+  $msgnew="";
   session_start();
   if(isset($_SESSION["userName"])){
     $userName = $_SESSION["userName"];
@@ -9,6 +11,11 @@
   }else{
     $_SESSION["location"]="memberPage.php";
     header("location: login.php");
+  }
+  if(isset($_SESSION["orderSuccess"])){
+    $msg = " :下單成功";
+    $msgnew = " <div style='color: red;'>--new</div>";
+    unset($_SESSION["orderSuccess"]);
   }
   require_once("newPDO.php");
   $sql = $db->prepare("select * from orders  where uId = $userId");
@@ -88,7 +95,7 @@
       <!-- sign up Input -->
       <div class="row" style="margin-top: 20px;">
         <div class = "col" >
-          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">OrderInfo</div>
+          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">OrderInfo<?= $msg?></div>
              
           
        </div>
@@ -115,7 +122,7 @@
       </div>
       <div class="col-6" style="border-style:ridge;">
         <?php if (isset($detailArray)) {?>
-          <div class="row" style="margin:20px ;"><?="訂單編號：".($array[0]);?></div>
+          <div class="row" style="margin:20px ;"><?="訂單編號：".($array[0]).$msg?></div>
           <div class="row" style="margin:20px">
             <div class="col-6"><?= "商品名稱"?></div>
             <div class="col-6"><?= "商品數量"?></div>

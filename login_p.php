@@ -18,14 +18,18 @@
                 if(!empty($row))
                 {
                     if($_POST["txtUserPass"]===$row["uPass"]){
-                        $_SESSION["userId"]=$row["uId"];
-                        $_SESSION["userName"]=$_POST["txtUserName"];
-                        if(isset($_SESSION["location"])){
-                            $historyPage = $_SESSION["location"];
-                            unset($_SESSION["location"]);
-                            header("location: ".$historyPage);
+                        if($row["uPermission"]=="0"){
+                            header("location: login.php?error=2");
                         }else{
-                            header("location: index.php");
+                            $_SESSION["userId"]=$row["uId"];
+                            $_SESSION["userName"]=$_POST["txtUserName"];
+                            if (isset($_SESSION["location"])) {
+                                $historyPage = $_SESSION["location"];
+                                unset($_SESSION["location"]);
+                                header("location: ".$historyPage);
+                            } else {
+                                header("location: index.php");
+                            }
                         }
                     }else{
                         header("location: login.php?error=1");

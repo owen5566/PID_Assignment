@@ -2,6 +2,9 @@
     $errorInfo="";
     session_start();
     if(isset($_SESSION["AdminName"])){
+      header("location: indexA.php");
+  }
+    if(isset($_GET["logout"])){
         $_SESSION=array();
         header("location: indexA.php");
     }

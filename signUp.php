@@ -136,7 +136,7 @@
         $(function(){
             $("#passHelpBlock").hide();
             $("#passHelpBlock2").hide();
-            $("#sTxtPass2").on("blur",function(){
+            $("#sTxtPass2 #sTxtPass").on("blur",function(){
                 if($("#sTxtPass2").val()!=$("#sTxtPass").val()||$("#sTxtPass2").val()==""){
                     $("#passHelpBlock").show();
                     $("#passHelpBlock2").hide();

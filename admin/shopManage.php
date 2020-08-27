@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>ShopManage</title>
     <link rel="stylesheet" href="../bootstrap4/bootstrap.min.css">
     <script src="../js/jquery-3.2.1.min.js"></script>
     <script src="../bootstrap4/popper.js"></script>
@@ -76,7 +76,7 @@
       <!-- head -->
       <div class="row" style="margin-top: 20px;">
         <div class = "col" >
-          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">ProductInfo</div>
+          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">ProductList</div>
       <!-- end of head -->
       <!-- table -->
       <table class="table table-striped">
@@ -92,7 +92,7 @@
             <?php foreach($productArray as $array){?>
             <tr>
             <th scope="row"><?=$array["pId"]?></th>
-            <td><?=$array["pName"]?></td>
+            <td><a href="productInfo.php?pId=<?= $array["pId"]?>" target = "blank"><?=$array["pName"]?></a></td>
             <td><?=$array["pPrice"]?></td>
             <td><?=$array["pInventory"]?></td>
             </tr>
@@ -101,7 +101,7 @@
             
         </tbody>
         </table>
-      
+      <a href="productInfo.php?new="><button class="btn">add item</button>
     </div>
 </body>
 </html>

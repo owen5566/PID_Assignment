@@ -3,11 +3,21 @@
     $errorInfo="";
     session_start();
     if(isset($_SESSION["userName"])){
+      header("location: index.php");
+  }
+    if(isset($_GET["logout"])){
         $_SESSION=array();
         header("location: index.php");
     }
     if(isset($_GET["error"])){
-      $errorInfo = "<div style='color:red'>*wrong username/password</div>";
+      switch($_GET["error"]){
+        case 1:
+          $errorInfo = "<div style='color:red'>*wrong username/password</div>";
+        break;
+        case 2:
+          $errorInfo = "<div style='color:red'>*帳號被禁用ㄌ！</div>";
+        break;
+      }
     }
 ?>
 <!DOCTYPE html>

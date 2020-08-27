@@ -70,7 +70,7 @@
           <span class="navbar-text" style="margin-right: 10px;">
             hello <?=$userName?>!
           </span>
-          <a href="login.php"><button class="btn btn-outline-info my-2 my-sm-0"><?=($status)? "Logout" :"Login"?></button></a>
+          <a href=<?=($status)? "login.php?logout=1" :"login.php"?>><button class="btn btn-outline-info my-2 my-sm-0"><?=($status)? "Logout" :"Login"?></button></a>
           <a href="cart.php"><i class="fa fa-shopping-cart fa-fw" ></i></a>
 
         </div>

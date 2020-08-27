@@ -61,7 +61,7 @@
           <span class="navbar-text" style="margin-right: 10px;">
             hello <?=$userName?>
           </span>
-          <a href="loginA.php"><button class="btn btn-outline-info my-2 my-sm-0"><?=($status)? "Logout" :"Login"?></button></a>
+          <a href=<?=($status)? "loginA.php?logout=1" :"loginA.php"?>><button class="btn btn-outline-info my-2 my-sm-0"><?=($status)? "Logout" :"Login"?></button></a>
           <!-- <form class="form-inline my-2 my-lg-0">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Login</button>
           </form> -->

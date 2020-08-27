@@ -13,6 +13,24 @@
     while($row = $result->fetch()){
         $userArray[]=$row;
     }
+    if(isset($_POST["editPermission"])){
+      $editUid = $_POST["uId"];
+      if($db->query("update userTable set uPermission = '0' where uId=$editUid")){
+        echo "update success";
+        header("location: userManage.php");
+      }else {
+        echo "update error";
+      }
+    }
+    if(isset($_POST["active"])){
+      $editUid = $_POST["uId"];
+      if($db->query("update userTable set uPermission = '1' where uId=$editUid")){
+        echo "update success";
+        header("location: userManage.php");
+      }else {
+        echo "update error";
+      }
+    }
     
 ?>
 <!DOCTYPE html>
@@ -28,7 +46,7 @@
     <style>
       .btn{
         margin-right: 10px;
-      }
+      }      
     </style>
 </head>
 <body>
@@ -79,7 +97,7 @@
           <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">CustomerInfo</div>
       <!-- end of head -->
       <!-- table -->
-      <table class="table table-striped">
+      <table class="table ">
         <thead>
             <tr>
             <th scope="col">#</th>
@@ -94,7 +112,26 @@
             <th scope="row"><?=$array["uId"]?></th>
             <td><?=$array["uName"]?></td>
             <td><?=$array["uMail"]?></td>
-            <td><?=$array["uPermission"]?></td>
+            <td><div class = "data"><?php switch($array["uPermission"]){
+              case 0:
+                echo "禁用";
+              break;
+              case 1:
+                echo "正常";
+              break;
+              case 2:
+                echo "正常2";
+              break;}
+            ?></div>
+            <form method="POST">
+              <input type = "text" name = "uId" style="display:none;" value="<?=$array["uId"]?>">            
+              <?php if($array["uPermission"]!="0"){?>
+              <input type = "submit" id = "btnEdit" name = "editPermission" class="btn btn-outline-danger" style="" value="ban"></input>
+              <?php }else{?>
+              <input type = "submit" id = "btnEdit" name = "active" class="btn btn-outline-success" style="" value="unban"></input>
+              <?php } ?>
+            </form>
+          </td>
             </tr>
             <tr>
             <?php }?>
@@ -103,5 +140,17 @@
         </table>
       
     </div>
+    <script>
+      function showEdit(status){
+      if(status){//edit
+        $(".edit").show();
+        $(".data").hide();
+
+      }else{//cancel
+        $(".edit").hide();
+        $(".data").show();      
+      }
+    }
+    </script>
 </body>
 </html>
