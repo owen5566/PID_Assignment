@@ -1,24 +1,31 @@
 <?php
-  $userName = "Guest";
-  $status = 0;
-  $msg="";
-  $msgnew="";
+  // $userName = "Guest";
+  // $status = 0;
+  // $msg="";
+  // $msgnew="";
   session_start();
-  if(isset($_SESSION["userName"])){
-    $userName = $_SESSION["userName"];
-    $userId = $_SESSION["userId"];
+  if(isset($_SESSION["AdminName"])){
+    $userName = $_SESSION["AdminName"];
     $status = 1;
   }else{
-    $_SESSION["location"]="memberPage.php";
-    header("location: login.php");
+      header("location: loginA.php");
   }
-  if(isset($_SESSION["orderSuccess"])){
-    $msg = " :下單成功";
-    $msgnew = " <div style='color: red;'>--new</div>";
-    unset($_SESSION["orderSuccess"]);
+  if(isset($_GET["cId"])){
+    $cId =  $_GET["cId"];
   }
-  require_once("newPDO.php");
-  $sql = $db->prepare("select * from orders  where uId = $userId ORDER BY oId DESC");
+  if(isset($_GET["cName"])){
+    $cName =  $_GET["cName"];
+  }
+  //   $_SESSION["location"]="memberPage.php";
+  //   header("location: login.php");
+  // }
+  // if(isset($_SESSION["orderSuccess"])){
+  //   $msg = " :下單成功";
+  //   $msgnew = " <div style='color: red;'>--new</div>";
+  //   unset($_SESSION["orderSuccess"]);
+  // }
+  require_once("../newPDO.php");
+  $sql = $db->prepare("select * from orders  where uId = $cId ORDER BY oId DESC");
   $sql->execute();
   while($row = $sql->fetch()){
     $orderArray[] = $row;
@@ -43,24 +50,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign UP</title>
-    <link rel="stylesheet" href="bootstrap4/bootstrap.min.css">
-    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <title>customerOrders</title>
+    <link rel="stylesheet" href="../bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
 
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="bootstrap4/popper.js"></script>
-    <script src="bootstrap4/bootstrap.min.js"></script>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../bootstrap4/popper.js"></script>
+    <script src="../bootstrap4/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
     <!-- header -->
-    <?php require("headerC.php")?>
+    <?php require("header.php")?>
     <br>
     <!-- end of header -->
       <!-- sign up Input -->
       <div class="row" style="margin-top: 20px;">
         <div class = "col" >
-          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">OrderInfo<?= $msg?></div>
+          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;"><?= $_GET["cName"]." 's ORDERs"?></div>
              
           
        </div>
@@ -87,7 +94,7 @@
       </div>
       <div class="col-6" style="border-style:ridge;">
         <?php if (isset($detailArray)){?>
-          <div class="row" style="margin:20px ;"><?="訂單編號：".($detailArray[0]["orderId"]).$msg?></div>
+          <div class="row" style="margin:20px ;"><?="訂單編號：".($detailArray[0]["orderId"])?></div>
           <div class="row" style="margin:20px">
             <div class="col-6"><?= "商品名稱"?></div>
             <div class="col-6"><?= "商品數量"?></div>

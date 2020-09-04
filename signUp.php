@@ -2,12 +2,12 @@
     $sameName="";
     $signupSuccess="";
     if (isset($_POST["submit"])) {
+      print_r($_POST);
         require_once("newPDO.php");
         $sql = $db->prepare("select * from userTable where uName = :uName");
         $sql->bindParam("uName", $_POST["sTxtUserName"], PDO::PARAM_STR);
         if (!$sql->execute()) {
-            $info = $db->errorInfo();
-            print_r($info);
+            echo "userName q err";
         } else {
             $row = $sql->fetch();
             if (!empty($row)) {
@@ -36,6 +36,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign UP</title>
     <link rel="stylesheet" href="bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="bootstrap4/popper.js"></script>
     <script src="bootstrap4/bootstrap.min.js"></script>
@@ -44,7 +45,7 @@
     <div class="container">
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="index.php">JUST BUT IT</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -69,7 +70,7 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              <a class="nav-link disabled" href="admin/loginA.php" tabindex="-1" aria-disabled="true">Admin</a>
             </li>
           </ul>
           <span class="navbar-text" style="margin-right: 10px;">
@@ -104,8 +105,8 @@
                     <label for="sTxtPass2" class="col-4 col-form-label">check password</label> 
                     <div class="col-8">
                     <input id="sTxtPass2" name="sTxtPass2" placeholder="please input password again" type="password" class="form-control" aria-describedby="text2HelpBlock" required> 
-                    <div id="passHelpBlock" class="" style="color: crimson; font-size: xx-small;">*請確認兩次輸入是否相同</div>
-                    <div id="passHelpBlock2" class="" style="color: green; font-size: xx-small;">Ｖ正確</div>
+                    <div id="passHelpBlock" class="" style="color: crimson; font-size: xx-small;"><i class="fa fa-close fa-1"></i>請確認兩次輸入是否相同</div>
+                    <div id="passHelpBlock2" class="" style="color: green; font-size: xx-small;"><i class="fa fa-check fa-1" aria-hidden="true"></i>正確</div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -115,7 +116,6 @@
                         <input id="sTxtEmail" name="sTxtEmail" type="text" class="form-control" required> 
                         <div class="input-group-append">
                         <div class="input-group-text">
-                            <i class="fa fa-at"></i>
                         </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                 </div> 
                 <div class="form-group row">
                     <div class="offset-4 col-8">
-                    <button name="submit" type="submit" class="btn btn-primary" value=1>Sign Up</button>
+                    <button id="submit" name="submit" type="submit" class="btn btn-primary" value=1 >Sign Up</button>
                     <div id="HelpBlock3" class="" style="color: green; font-size: xx-small;"><?=$signupSuccess?></div>
                     </div>
                 </div>
@@ -136,13 +136,17 @@
         $(function(){
             $("#passHelpBlock").hide();
             $("#passHelpBlock2").hide();
-            $("#sTxtPass2 #sTxtPass").on("blur",function(){
+            $("#sTxtPass2,#sTxtPass").on("blur",function(){
                 if($("#sTxtPass2").val()!=$("#sTxtPass").val()||$("#sTxtPass2").val()==""){
                     $("#passHelpBlock").show();
                     $("#passHelpBlock2").hide();
+                    $("#submit").prop("disabled",true);
                 }else{
                     $("#passHelpBlock").hide();
                     $("#passHelpBlock2").show();
+                    $("#submit").prop("disabled",false);
+
+                    
                 }
             }) 
         })

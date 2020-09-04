@@ -5,7 +5,7 @@
       header("location: indexA.php");
   }
     if(isset($_GET["logout"])){
-        $_SESSION=array();
+        unset($_SESSION["AdminName"]);
         header("location: indexA.php");
     }
     if(isset($_GET["error"])){

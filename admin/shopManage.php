@@ -8,10 +8,21 @@
     }else{
         header("location: loginA.php");
     }
+    $msg = (isset($_SESSION["newMsg"]))?$_SESSION["newMsg"]:"";
     require_once("../newPDO.php");
     $result = $db->query("select * from products");
     while($row = $result->fetch()){
         $productArray[]=$row;
+    }
+    //delete product
+    if(isset($_POST["btnDel"])){
+      print_r($_POST);
+      $pIdDel = $_POST["pIdDel"];
+      if(!$db->query("delete from products where pId =$pIdDel")){
+        $debug = "delete product item fail";
+      }else {
+        header("location: shopManage.php");
+      }
     }
     
 ?>
@@ -34,74 +45,47 @@
 <body>
     <div class="container">
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="loginA.php">AdminHome</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="shopManage.php">ShopManage</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="userManage.php">UserManage</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <span class="navbar-text" style="margin-right: 10px;">
-            hello <?=$userName?>
-          </span>
-          <a href="loginA.php"><button class="btn btn-outline-info my-2 my-sm-0"><?=($status)? "Logout" :"Login"?></button></a>
-          <!-- <form class="form-inline my-2 my-lg-0">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Login</button>
-          </form> -->
-        </div>
-      </nav>
-      <!-- end navBar -->
+    <?php require("header.php")?>
+    <!-- end navBar -->
       <!-- head -->
       <div class="row" style="margin-top: 20px;">
         <div class = "col" >
-          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">ProductList</div>
+          <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;background-color: antiquewhite;">ProductList<?= $msg?></div>
       <!-- end of head -->
       <!-- table -->
       <table class="table table-striped">
         <thead>
             <tr>
             <th scope="col">#</th>
+            <th scope="col">ProductId</th>
             <th scope="col">ProductName</th>
             <th scope="col">UnitPrice</th>
             <th scope="col">Inventory</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($productArray as $array){?>
+            <?php $count=1;foreach($productArray as $array){?>
             <tr>
-            <th scope="row"><?=$array["pId"]?></th>
+            <th scope="row"><?= $count?></th>
+            <td><?=$array["pId"]?></td>
             <td><a href="productInfo.php?pId=<?= $array["pId"]?>" target = "blank"><?=$array["pName"]?></a></td>
             <td><?=$array["pPrice"]?></td>
-            <td><?=$array["pInventory"]?></td>
+            <td class='row' style="margin-right:0px">
+              <div class="col"><?=$array["pInventory"]?></div>
+              <form class ="col-4" method="post">
+                <input type = "submit" id = "" name = "btnDel" class="btn btn-outline-danger" style="" value="delete">
+                <input type = "text" name = "pIdDel" value="<?=$array["pId"]?>" style="display: none;">
+              </form>
+            </td>
             </tr>
-            <tr>
-            <?php }?>
+            
+            <?php $count++;}?>
             
         </tbody>
         </table>
-      <a href="productInfo.php?new="><button class="btn">add item</button>
+      <a href="newItem.php"><button class="btn">add item</button>
     </div>
 </body>
+<?php unset($_SESSION["newMsg"]);?>
+
 </html>
