@@ -7,14 +7,14 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.php">首頁 <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="memberPage.php">memberPage</a>
+            <a class="nav-link" href="memberPage.php">使用者頁面／訂單</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
+                暫時
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="#">Action</a>
@@ -24,7 +24,7 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="admin/loginA.php" tabindex="-1" aria-disabled="true">Admin</a>
+              <a class="nav-link disabled" href="admin/loginA.php" tabindex="-1" aria-disabled="true">後台管理</a>
             </li>
           </ul>
           <span class="navbar-text" style="margin-right: 10px;">

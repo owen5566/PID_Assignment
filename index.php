@@ -33,6 +33,9 @@
           height:200px ;
           width: auto;
         }
+        .homeImg{
+          background-image: url("admin/upload/homeImage.jpg")
+        }
     </style>
 </head>
 <body>
@@ -43,11 +46,13 @@
     <!-- end of header -->
     <!-- homeImg -->
     <div class="row homeImg" style="background-color: antiquewhite; margin-left: auto;margin-right: auto;height: 500px;">
-        <div class="btn btn-light" style="height: 50px;width: 200px; position: relative;top:400px;left: 100px"></div>
+      <div style="position:relative;top:20%;left:5% ;font-size:x-large;color: #ffffff">中元節特賣</div>
+      <a href="#list"><div class="btn btn-dark" style="height: 50px;width: 200px; position: relative;top:400px;left: 100px">
+        <div style="position:relative;top:20%">SHOPPING NOW</div>
+      </div></a>
     </div>
     <!-- product -->
-    <div class="container">
-    <div class="row">
+    <div id="list" class="row">
       <?php while($row = mysqli_fetch_assoc($result)){?>
       <div class= "col-md-3 col-sm-6" style="height: 300px;padding: 20px;">
         <a href="product.php<?="?id=".$row["pId"]?>" target="_blank">
@@ -57,7 +62,6 @@
         <div class="productPrice">$ <?=$row["pPrice"]?></div>
       </div>
       <?php }?>
-    </div>
     </div>
   </div>
   <br><br><br><br><br><br><br><br><br><br><br><br><br>
