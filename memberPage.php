@@ -25,15 +25,14 @@
   }
   if(isset($_POST["btnDetail"])){
     $idx = $_POST["btnIndex"];
-    echo $orderArray[$idx][0];
     $sqlD = $db->prepare("select od.*,p.pName from orderDetail od join products p on od.productId = p.pId where orderId = ".$orderArray[$idx][0]);
     if($sqlD->execute()){
        while ($row = $sqlD->fetch()) {
            $detailArray[] = $row;
        }
-       echo "detail query success";
+      //  echo "detail query success";
      }else{
-       echo "detail error";
+      //  echo "detail error";
      }
   }
 
@@ -43,7 +42,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign UP</title>
+    <title>MemberPage</title>
     <link rel="stylesheet" href="bootstrap4/bootstrap.min.css">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
@@ -83,18 +82,20 @@
             </form>
           </div>
         </div>
+        <hr>
         <?php $count++;}?>
       </div>
       <div class="col-6" style="border-style:ridge;">
         <?php if (isset($detailArray)){?>
           <div class="row" style="margin:20px ;"><?="訂單編號：".($detailArray[0]["orderId"]).$msg?></div>
+          <hr>
           <div class="row" style="margin:20px">
             <div class="col-6"><?= "商品名稱"?></div>
-            <div class="col-6"><?= "商品數量"?></div>
+            <div class="col-6"><?= "購買數量"?></div>
         </div>
         <?php foreach ($detailArray as $array) {?>
           <div class="row" style="margin:20px">
-            <div class="col-6"><?= $array["pName"];?></div>
+            <div class="col-6"><a href="product.php?id=<?= $array["productId"] ?>" target="blank"><?= $array["pName"];?></a></div>
             <div class="col-6"><?= $array["qty"];?></div>
         </div>
         <?php }}}else{echo "沒有任何訂單記錄";}?>

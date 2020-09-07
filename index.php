@@ -30,7 +30,7 @@
         }
         .productImg{
           background-color: powderblue  ;
-          height:150px ;
+          height:200px ;
           width: auto;
         }
     </style>
@@ -49,8 +49,10 @@
     <div class="container">
     <div class="row">
       <?php while($row = mysqli_fetch_assoc($result)){?>
-      <div class= "col-3" style="height: 250px;padding: 20px;">
-        <a href="product.php<?="?id=".$row["pId"]?>" ><div class="productImg">img HERE</div></a>
+      <div class= "col-md-3 col-sm-6" style="height: 300px;padding: 20px;">
+        <a href="product.php<?="?id=".$row["pId"]?>" target="_blank">
+          <div class="productImg"><img class="img-fluid img-thumbnail" src="admin/upload/<?= $row["pId"]?>.jpg" style="width:100%;height:100%"/></div>
+        </a>
         <div class="productName"><?=$row["pName"]?></div>
         <div class="productPrice">$ <?=$row["pPrice"]?></div>
       </div>

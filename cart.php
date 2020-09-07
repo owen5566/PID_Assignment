@@ -33,7 +33,7 @@
     $sqlOrder = $db->prepare("select uOrderIdx from userTable where uId = $userId");
       if($sqlOrder->execute()){
         $result = $sqlOrder->fetch();
-        echo $orderIdx =$userId.date("Ymd").(1000+$result["uOrderIdx"]);
+        $orderIdx =$userId.date("Ymd").(1000+$result["uOrderIdx"]);
         //create order
         $sqlOrder = $db->prepare("insert into orders (oId,uId,ship) values ($orderIdx,$userId,0)");
           if($sqlOrder->execute()){
@@ -161,7 +161,9 @@
     <div class="row" style="margin-top: 20px">
       <div class="col-7">
         <div class="row">
-          <div class="col-3"style="height: 120px; background-color: antiquewhite;"></div>
+          <div class="col-3"style="height: 150px; background-color: antiquewhite;text-align:center;">
+            <img src="admin/upload/<?= $array["pId"]?>.jpg" style="max-width:95%;max-height:95%;">
+          </div>
           <div class="col-9"><?=$array["pName"]?></div>
         </div>  
       </div>

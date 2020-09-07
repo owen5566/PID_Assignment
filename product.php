@@ -88,8 +88,10 @@
     <br>
     <!-- end of header -->
     <div class="row">
-        <div class="col-5" style="padding: 20px;height: 300;">
-            <div class="infoImg"style="background-color: antiquewhite;height:500px ;"></div>
+        <div class="col-5" style="padding: 20px;height: 300;text-align:center;background-color: antiquewhite;">
+            <div class="infoImg" style="height:500px ;">
+              <img src = "admin/upload/<?= $row["pId"]?>.jpg" class="img-fluid img-thumbnail" alt ="no image" style="width:95%;max-height:95%">
+            </div>
         </div>
         <div class="col-7" style="padding: 40px;">
         <div class="row" style="margin: 20px"><h3><?=$row["pName"]?></h3></div>
