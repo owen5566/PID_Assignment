@@ -11,9 +11,10 @@
     if (isset($_GET["pId"])) {
         require_once("../newPDO.php");
         $pId = $_GET["pId"];
-        $result = $db->query("select * from products where pId = $pId");
-        while ($row = $result->fetch()) {
-            $productArray[]=$row;
+        if ($result = $db->query("select * from products where pId = $pId")) {
+            while ($row = $result->fetch()) {
+                $productArray[]=$row;
+            }
         }
     }else {        
         header("location: shopManage.php");
@@ -121,7 +122,7 @@
         <!-- head -->
         <div class="row" style="margin-top: 20px;">
             <div class = "col" >
-                <div style="font-size: xx-large;color: grey ;margin-bottom: 10px;">ProductInfo</div>
+                <div id="title" style="font-size: xx-large;color: grey ;margin-bottom: 10px;">ProductInfo</div>
             </div>
             <div class = "col" style="text-align:right;">
                 
@@ -130,21 +131,21 @@
 
         <!-- end of head -->
         <!-- table -->
-        <div class="row" style="height: 300px;margin: auto;">
+        <div id = "infoBlock" class="row" style="height: 300px;margin: auto;">
             <div class="col" style="background-color: bisque;margin-top: 10px;">
             <!-- uploadImg -->
-            product Img
-            <img src="upload/<?= $pId?>.jpg" alt="img" style="width:90%;margin:20px">
+            <p id = "imgSettingMsg">product Img</p>
+            <img id = "pImg" src="upload/<?= $pId?>.jpg" alt="img" style="width:90%;margin:20px" onerror="imgError()">
             <form method="post" enctype="multipart/form-data" action="">
                 upload new file:
-                <input type="file" name="upfile" /><br>
-                <input type="submit" name="btnSubmit" value="upload" />
+                <input type="file" name="upfile" class="btn"/><br>
+                <input type="submit" name="btnSubmit" class="btn btn-success"value="upload" />
             </form>
             <form method="post">
-              <input type="submit" name="btnDelete" value="delete" />
+              <input id = "delImg" type="submit" class="btn btn-danger" name="btnDelete" value="delete" />
             </form>
             </div>
-            <div class="col" style="border-style: groove;margin-top: 10px;">
+            <div class="col" style="margin-top: 10px;">
               <div class="row float-right" style="margin:10px">
                 <input type="button" id="btnEdit" class="btn data btn-outline-info" style="height: 40px;" value="edit" onclick="showEdit(1)"></input>
                 <span>
@@ -158,7 +159,7 @@
                 <table class="table table-striped">
                     
                     <tbody>
-                      <?php if(isset($_GET["pId"])){?>
+                      <?php if($exist = isset($productArray[0][0])){?>
                       <tr>
                         <td>product ID</td>
                         <td style="text-align: right;"><?=$productArray[0][0]?></td>
@@ -186,7 +187,9 @@
 
                       </tr>
 
-                      <?php }?>
+                      <?php }else{
+                       echo '無此商品';
+                      }?>
                     </tbody>
                   </table>
             </div>
@@ -195,23 +198,30 @@
       
     </div>
     <script>
-    let temp = ["","","",""];
 
-    function showEdit(status){
-      if(status){//edit
-        $(".edit").show();
-        $(".data").hide();
+      function showEdit(status){
+        if(status){//edit
+          $(".edit").show();
+          $(".data").hide();
 
-      }else{//cancel
-        $(".edit").hide();
-        $(".data").show();
-        $("#txtName").val($("#name").text());
-        $("#txtPrice").val($("#price").text());
-        $("#txtInven").val($("#Inven").text());
-        $("#txtInfo").val($("#Info").text())
+        }else{//cancel
+          $(".edit").hide();
+          $(".data").show();
+          $("#txtName").val($("#name").text());
+          $("#txtPrice").val($("#price").text());
+          $("#txtInven").val($("#Inven").text());
+          $("#txtInfo").val($("#Info").text())
+        }
       }
-    }
-    
+      function imgError(){
+        $("#delImg").hide();
+        $("#pImg").hide();
+        $("#imgSettingMsg").append(" : no product img now");
+      }
+      <?php if (!$exist) { ?>
+        $("#infoBlock").hide();
+        $('#title').append(": 無此商品").append("<a href='shopManage.php'>回產品列表</a>");
+      <?php } ?>
   </script>
 </body>
 </html>

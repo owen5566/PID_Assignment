@@ -58,6 +58,7 @@
             <tr>
             <th scope="col">#</th>
             <th scope="col">ProductId</th>
+            <th scope="col">ProductIMG</th>
             <th scope="col">ProductName</th>
             <th scope="col">UnitPrice</th>
             <th scope="col">Inventory</th>
@@ -68,7 +69,9 @@
             <tr>
             <th scope="row"><?= $count?></th>
             <td><?=$array["pId"]?></td>
+            <td><img id = "pImg" src="upload/<?= $array["pId"]?>.jpg" alt="not set yet:<" style="width:100px;margin:5px" onerror="imgError()"></td>
             <td><a href="productInfo.php?pId=<?= $array["pId"]?>" target = "blank"><?=$array["pName"]?></a></td>
+
             <td><?=$array["pPrice"]?></td>
             <td class='row' style="margin-right:0px">
               <div class="col"><?=$array["pInventory"]?></div>
