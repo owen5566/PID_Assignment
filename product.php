@@ -28,33 +28,41 @@
     $db = null;
     header("location: index.php");
   }
-  if(isset($_POST["btnAdd"])){
-    if($status==0){
-      $_SESSION["location"]="product.php?id=".$_GET["id"];
-      header("location: login.php");
-    }else{
+  if (isset($_POST["btnAdd"])) {
+    if ($status==0) {
+        $_SESSION["location"]="product.php?id=".$_GET["id"];
+        header("location: login.php");
+    } else {
         // PID UID QTY
         $uId = intval($_SESSION["userId"]);
         $pId = intval($row["pId"]);
         $qty = intval($_POST["qty"]);
         $checkP = $db->prepare("select * from cart where uId = $uId AND pId = $pId");
         $checkP->execute();
-        if($result = $checkP->fetch()){
-          $addCartMsg = "商品已經存在購物車中！";
-        }else{
-          $insertC = $db->prepare("insert into cart values(:uId , :pId, :qty)");
-          $insertC->bindParam("uId",$uId,PDO::PARAM_INT);
-          $insertC->bindParam("pId",$pId,PDO::PARAM_INT);
-          $insertC->bindParam("qty",$qty,PDO::PARAM_INT);
-            if(!$insertC->execute()){
-              $info = $db->errorInfo();
-              print_r($info);
-            }else {
-              $addCartMsg ="成功加入購物車！";
+        if ($result = $checkP->fetch()) {
+            $addCartMsg = "商品已經存在購物車中！";
+        } else {
+            if ($result = $db->query("select * from products where pid = $pId")) {
+                $row = $result->fetch();
+                if ($row["pInventory"]<$qty) {
+                    $addCartMsg = "＊庫存不足！！";
+                } else {
+                    $insertC = $db->prepare("insert into cart values(:uId , :pId, :qty)");
+                    $insertC->bindParam("uId", $uId, PDO::PARAM_INT);
+                    $insertC->bindParam("pId", $pId, PDO::PARAM_INT);
+                    $insertC->bindParam("qty", $qty, PDO::PARAM_INT);
+                    if (!$insertC->execute()) {
+                        $info = $db->errorInfo();
+                        print_r($info);
+                    } else {
+                        $addCartMsg ="成功加入購物車！";
+                    }
+                }
             }
         }
-      }
-  }
+    }
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -107,7 +115,7 @@
         <div id = "pInven" class="col-3" style="text-align: right;" value="<?=$row["pInventory"]?>">Inventory:<?=$row["pInventory"]?></div>
           <div class="col" style="text-align: right;">
               <form method="post" >
-                <input type="number" name = "qty" min="1" max="100" style="width: 70px" value=1></input>    
+                <input type="number" name = "qty" min="1" max=<?=$row["pInventory"]?> style="width: 70px" value=1></input>    
                 <input id ="btnAdd"class="btn btn-info" type="submit" name="btnAdd" value="ADD TO CART" <?= ($row["pInventory"]==0)?'disabled="disabled"':""?>></input>
               </form>
               <div><?=$addCartMsg?></div>

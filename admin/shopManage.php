@@ -24,7 +24,7 @@
         $files = glob('upload/*'); // get all file names
         var_dump($files);  
         foreach($files as $file){ // iterate files
-          if (is_file($file)&&$file=="upload/$pId.jpg") {
+          if (is_file($file)&&$file=="upload/$pIdDel.jpg") {
               unlink($file);
           }
       }

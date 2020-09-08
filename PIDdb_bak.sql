@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `PID_db`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `PID_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `PID_db`;
-
---
 -- Table structure for table `admin`
 --
 
@@ -69,7 +61,6 @@ CREATE TABLE `cart` (
 
 LOCK TABLES `cart` WRITE;
 /*!40000 ALTER TABLE `cart` DISABLE KEYS */;
-INSERT INTO `cart` VALUES (1,4,4);
 /*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +75,8 @@ CREATE TABLE `orderDetail` (
   `orderId` varchar(15) NOT NULL,
   `productId` int(11) NOT NULL,
   `unitPrice` int(11) NOT NULL,
-  `qty` int(11) NOT NULL
+  `qty` int(11) NOT NULL,
+  PRIMARY KEY (`orderId`,`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -94,7 +86,7 @@ CREATE TABLE `orderDetail` (
 
 LOCK TABLES `orderDetail` WRITE;
 /*!40000 ALTER TABLE `orderDetail` DISABLE KEYS */;
-INSERT INTO `orderDetail` VALUES ('1202009071000',1,100,6),('1202009071000',3,10,99),('1202009071000',4,870,18),('1202009071003',1,100,5),('1202009071003',2,999,9),('1202009071003',4,870,7),('1202009071006',1,100,5),('1202009071006',4,870,7),('1202009071008',1,100,6),('1202009071009',4,870,8),('1202009071010',5,50000,1);
+INSERT INTO `orderDetail` VALUES ('1202009081000',3,120,4),('1202009081000',5,75,4),('1202009081002',1,50,5),('1202009081003',5,75,4),('1202009081004',3,120,6),('1202009081005',4,100,3),('1202009081006',4,100,3),('2202009081000',1,50,4),('2202009081000',3,120,4),('2202009081000',4,100,4);
 /*!40000 ALTER TABLE `orderDetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +113,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES ('1202009071000','2020-09-07 03:02:58',1,0,NULL),('1202009071003','2020-08-08 09:22:48',1,0,NULL),('1202009071006','2020-07-07 09:23:17',1,0,NULL),('1202009071008','2020-06-03 09:37:47',1,0,NULL),('1202009071009','2020-09-07 09:37:55',1,0,NULL),('1202009071010','2020-05-12 09:38:09',1,0,NULL);
+INSERT INTO `orders` VALUES ('1202009081000','2020-07-17 08:07:34',1,0,NULL),('1202009081002','2020-08-15 08:08:04',1,0,NULL),('1202009081003','2020-06-23 08:09:04',1,0,NULL),('1202009081004','2020-05-28 08:09:14',1,0,NULL),('1202009081005','2020-09-08 08:19:54',1,0,NULL),('1202009081006','2020-09-08 08:30:35',1,0,NULL),('2202009081000','2020-09-08 08:06:17',2,0,NULL);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +131,7 @@ CREATE TABLE `products` (
   `pInventory` int(11) NOT NULL,
   `pInfo` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`pId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +140,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'口罩',100,78,'非醫療用'),(2,'紙飛機套組',999,191,'喝水不夠'),(3,'冷凍便當',10,0,'熱銷\r\n'),(4,'熊班長掃把',870,47,'掃地時間到了'),(5,'東海畢業證書',50000,0,'值錢');
+INSERT INTO `products` VALUES (1,'口罩',50,90,'非醫療用，謹慎下單'),(3,'冷凍便當',120,106,'可以帶來公司微波 方便'),(4,'熊班長掃把',100,0,'灰塵剋星\r\n＊不適合掃落葉'),(5,'酒精',75,92,'消毒用 勿酗酒');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +154,7 @@ DROP TABLE IF EXISTS `userTable`;
 CREATE TABLE `userTable` (
   `uId` int(11) NOT NULL AUTO_INCREMENT,
   `uName` varchar(20) NOT NULL,
-  `uPass` varchar(20) NOT NULL,
+  `uPass` varchar(64) NOT NULL,
   `uMail` varchar(50) NOT NULL,
   `uPermission` enum('0','1','2') DEFAULT '2',
   `uOrderIdx` int(11) NOT NULL DEFAULT '0',
@@ -176,7 +168,7 @@ CREATE TABLE `userTable` (
 
 LOCK TABLES `userTable` WRITE;
 /*!40000 ALTER TABLE `userTable` DISABLE KEYS */;
-INSERT INTO `userTable` VALUES (1,'owen5566','5566','owen@mail.com','1',11),(2,'userBanned','5566','ban@mail.com','0',0);
+INSERT INTO `userTable` VALUES (1,'owen5566','be41b7f1fa56ba2b0582910053c86cf6ee7e311efc51300220df0918bb9a287b','owen@mail.com','2',7),(2,'brave5566','be41b7f1fa56ba2b0582910053c86cf6ee7e311efc51300220df0918bb9a287b','brave@mail.com','2',3);
 /*!40000 ALTER TABLE `userTable` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -189,4 +181,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-07 17:58:56
+-- Dump completed on 2020-09-08 16:39:24

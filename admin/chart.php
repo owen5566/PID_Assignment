@@ -73,16 +73,16 @@
                     let monthSale = {};
                     makeChart(arr,$("#statType :selected").val());
                         })
-                    })
+                    
             
             })
             $("#statType").change(function(){
                 makeChart(arr,$("#statType :selected").val());
+            })
             //資料處理 製圖
             function makeChart(inputArr,type){
                 $("#chartHere").html("<canvas id='myChart'></canvas>")//reset
                 var ctx = document.getElementById('myChart').getContext('2d');
-                
                 let monthArr=[];
                 let monthStr=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
                 backgroundColor=["rgba(255, 99, 132, 0.7)","rgba(255, 159, 64, 0.7)","rgba(255, 205, 86, 0.7)","rgba(75, 192, 192, 0.7)","rgba(54, 162, 235, 0.7)","rgba(153, 102, 255, 0.7)","rgba(201, 203, 207, 0.7)"]
@@ -100,6 +100,7 @@
                     // (Object.keys(monthSale)).forEach(element=>{
                     //     monthArr.push(monthStr[parseInt(element)]);
                     // })
+
                     var chart = new Chart(ctx, {
                           "type": "line",
                           "data": { 
@@ -147,13 +148,11 @@
                     let productSale={};
                     inputArr.forEach(array=>{
                         if(typeof productSale[`${array.pName}`]=="undefined"){
-                            console.log("++");
                             productSale[`${array.pName}`]=0;
                         }
                         productSale[`${array.pName}`]+=parseInt(array.qty);
                         
                     });
-                    console.log(Object.keys(productSale));
                     var ctx = document.getElementById('myChart').getContext('2d');
 
                     var chart = new Chart(ctx, {

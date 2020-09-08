@@ -164,7 +164,7 @@
           <div class="col-3"style="height: 150px; background-color: antiquewhite;text-align:center;">
             <img src="admin/upload/<?= $array["pId"]?>.jpg" style="max-width:95%;max-height:95%;">
           </div>
-          <div class="col-9"><?=$array["pName"]?></div>
+          <div class="col-9"><?=$array["pName"]." ---"?>庫存：<?=$array["pInventory"]?></div>
         </div>  
       </div>
       <div class="col" style="text-align: right;"><?=$array["pPrice"]?></div>
