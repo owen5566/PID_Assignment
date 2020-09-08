@@ -21,6 +21,13 @@
       if(!$db->query("delete from products where pId =$pIdDel")){
         $debug = "delete product item fail";
       }else {
+        $files = glob('upload/*'); // get all file names
+        var_dump($files);  
+        foreach($files as $file){ // iterate files
+          if (is_file($file)&&$file=="upload/$pId.jpg") {
+              unlink($file);
+          }
+      }
         header("location: shopManage.php");
       }
     }
@@ -65,7 +72,9 @@
             </tr>
         </thead>
         <tbody>
-            <?php $count=1;foreach($productArray as $array){?>
+            <?php if(isset($productArray)){
+                $count=1;
+                foreach ($productArray as $array) {?>
             <tr>
             <th scope="row"><?= $count?></th>
             <td><?=$array["pId"]?></td>
@@ -82,7 +91,10 @@
             </td>
             </tr>
             
-            <?php $count++;}?>
+            <?php $count++;}
+            }else{
+
+            }?>
             
         </tbody>
         </table>

@@ -134,20 +134,36 @@
     </div>
     <script>
         $(function(){
+          $("#submit").prop("disabled",true);
+
+            let checkPass = 0;
             $("#passHelpBlock").hide();
             $("#passHelpBlock2").hide();
             $("#sTxtPass2,#sTxtPass").on("blur",function(){
                 if($("#sTxtPass2").val()!=$("#sTxtPass").val()||$("#sTxtPass2").val()==""){
                     $("#passHelpBlock").show();
                     $("#passHelpBlock2").hide();
+                    checkPass= 0;
                     $("#submit").prop("disabled",true);
                 }else{
                     $("#passHelpBlock").hide();
                     $("#passHelpBlock2").show();
-                    $("#submit").prop("disabled",false);
-
-                    
+                    checkPass= 1;
                 }
+            })
+            $(".form-control").on("blur",function(){
+              let count = 0 ;
+              setTimeout(function(){
+                  $(".form-control").each(function(){
+                    if($.trim($(this).val())!="")
+                      count++;
+                      if(count==4 && checkPass==1){
+                        $("#submit").prop("disabled",false);
+                      }else{
+                        $("#submit").prop("disabled",true);
+                      }
+                  });
+              }, 1000);
             }) 
         })
     </script>

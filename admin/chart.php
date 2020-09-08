@@ -58,6 +58,10 @@
                    endTime:$("#endTime").val(),
                    type: $("#statType :selected").val()
                 }
+                if(data.startTime==""||data.endTime==""){
+                    alert("請選擇時間");
+                    return;
+                }
                 // 抓時間區間內的訂單資料
                 $.ajax({
                 type:"POST",
@@ -81,6 +85,8 @@
                 
                 let monthArr=[];
                 let monthStr=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+                backgroundColor=["rgba(255, 99, 132, 0.7)","rgba(255, 159, 64, 0.7)","rgba(255, 205, 86, 0.7)","rgba(75, 192, 192, 0.7)","rgba(54, 162, 235, 0.7)","rgba(153, 102, 255, 0.7)","rgba(201, 203, 207, 0.7)"]
+                borderColor=["rgb(255, 99, 132)","rgb(255, 159, 64)","rgb(255, 205, 86)","rgb(75, 192, 192)","rgb(54, 162, 235)","rgb(153, 102, 255)","rgb(201, 203, 207)"]
                 if(type==1){
                     let monthSale = {};
                     for(i=new Date(data["startTime"]).getMonth();i<new Date(data["endTime"]).getMonth()+1;i++){
@@ -101,7 +107,7 @@
                               "datasets": [{ "label": "月銷售額(TWD)",
                                              "data": Object.values(monthSale),
                                              "fill": false,
-                                             "borderColor": "rgb(75, 192, 192)", "lineTension": 0.1 }] },
+                                             "borderColor": "rgba(75, 192, 192,0.7)", "lineTension": 0.1 }] },
                               "options": {} });                    
                               return;
                 }else if(type==2){
@@ -126,7 +132,7 @@
                             
                             datasets: [{
                                 label: '銷售額(NTD)',
-                                backgroundColor: '#F4A7B9',
+                                backgroundColor: 'rgba(244, 167, 185,0.7)',
                                 borderColor: '#F4A7B9',
                                 fill: false,
                                 data: Object.values(productSale)
@@ -160,7 +166,7 @@
                             
                             datasets: [{
                                 label: '銷售量',
-                                backgroundColor: '#91AD70',
+                                backgroundColor: 'rgba(145, 173, 112,0.7)',
                                 borderColor: '#227D51',
                                 fill: false,
                                 data: Object.values(productSale)
@@ -197,7 +203,8 @@
                                     data: Object.values(mixData[key]),
                                     type: 'line',
                                     "fill": false,
-                                    
+                                    borderColor:backgroundColor[datasets.length%7],
+                                    backgroundColor:backgroundColor[datasets.length%7],
                                     // this dataset is drawn on top
                                     order: 3
                                 }

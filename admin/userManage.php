@@ -73,12 +73,13 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($userArray as $array){?>
+            <?php if(isset($userArray)){
+                foreach ($userArray as $array) {?>
             <tr>
             <th scope="row"><?=$array["uId"]?></th>
             <td><?=$array["uName"]?></td>
             <td><?=$array["uMail"]?></td>
-            <td class= "row"><div class = "col-4 data"><?php switch($array["uPermission"]){
+            <td class= "row"><div class = "col-4 data"><?php switch ($array["uPermission"]) {
               case 0:
                 echo "禁用";
               break;
@@ -87,20 +88,22 @@
               break;
               case 2:
                 echo "正常2";
-              break;}
-            ?></div>
+              break;} ?></div>
             <form method="POST">
               <input type = "text" name = "uId" style="display:none;" value="<?=$array["uId"]?>">            
-              <?php if($array["uPermission"]!="0"){?>
+              <?php if ($array["uPermission"]!="0") {?>
               <input type = "submit" id = "btnEdit" name = "editPermission" class="btn btn-outline-danger" style="" value="ban"></input>
-              <?php }else{?>
+              <?php } else {?>
               <input type = "submit" id = "btnEdit" name = "active" class="btn btn-outline-success" style="" value="unban"></input>
               <?php } ?>
             </form>
           </td>
               <td><a href="customerOrders.php?cId=<?= $array["uId"]?>&cName=<?=$array["uName"]?>" target="blank"><button class = "btn btn-outline-info">歷史訂單</button></a></td>
             </tr>
-            <?php }?>
+            <?php }
+            }else{
+              
+            }?>
             
         </tbody>
         </table>

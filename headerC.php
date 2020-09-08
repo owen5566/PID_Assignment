@@ -12,17 +12,7 @@
             <li class="nav-item">
             <a class="nav-link" href="memberPage.php">使用者頁面／訂單</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                暫時
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
+            
             <li class="nav-item">
               <a class="nav-link disabled" href="admin/loginA.php" tabindex="-1" aria-disabled="true">後台管理</a>
             </li>

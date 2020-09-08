@@ -76,11 +76,11 @@
             <form action="loginA_p.php" id="login_form" name = "login_input" method="POST">
                 <!-- username -->
                 <div class="input-group mb-3 col-6">
-                    <input type="text" name = "txtUserName" class="form-control" placeholder="AdminName" aria-label="Username" aria-describedby="basic-addon1" required>
+                    <input type="text" name = "txtUserName" class="form-control" placeholder="預設:admin" aria-label="Username" aria-describedby="basic-addon1" required>
                   </div>
                 <!-- password -->
                 <div class="input-group mb-3 col-6">
-                    <input type="password" name = "txtUserPass"class="form-control" placeholder="password" aria-label="Username" aria-describedby="basic-addon1" required>
+                    <input type="password" name = "txtUserPass"class="form-control" placeholder="預設:admin" aria-label="Username" aria-describedby="basic-addon1" required>
                   </div>
                 <div class="" style="margin-left: 16px;">
                     <!-- <div>
