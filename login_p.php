@@ -17,7 +17,7 @@
                 $row = $sql->fetch();
                 if(!empty($row))
                 {
-                    if($_POST["txtUserPass"]===$row["uPass"]){
+                    if(hash("sha256",$_POST["txtUserPass"])===$row["uPass"]){
                         if($row["uPermission"]=="0"){
                             header("location: login.php?error=2");
                         }else{

@@ -15,7 +15,7 @@
             } else {
                 $insert = $db->prepare("insert into `userTable` (`uName`, `uPass`, `uMail`) VALUES(:uName, :uPass, :uMail)");
                 $insert->bindParam("uName", $_POST["sTxtUserName"], PDO::PARAM_STR);
-                $insert->bindParam("uPass", $_POST["sTxtPass"], PDO::PARAM_STR);
+                $insert->bindParam("uPass", hash("sha256",$_POST["sTxtPass"]), PDO::PARAM_STR);
                 $insert->bindParam("uMail", $_POST["sTxtEmail"], PDO::PARAM_STR);
                 if(!$insert->execute()){
                     $info = $db->errorInfo();

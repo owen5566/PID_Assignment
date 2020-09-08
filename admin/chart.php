@@ -75,9 +75,9 @@
                         })
                     })
             
+            })
             $("#statType").change(function(){
                 makeChart(arr,$("#statType :selected").val());
-            })
             //資料處理 製圖
             function makeChart(inputArr,type){
                 $("#chartHere").html("<canvas id='myChart'></canvas>")//reset
