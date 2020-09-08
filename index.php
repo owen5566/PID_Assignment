@@ -46,8 +46,8 @@
     <!-- end of header -->
     <!-- homeImg -->
     <div class="row homeImg" style="background-color: antiquewhite; margin-left: auto;margin-right: auto;height: 500px;">
-      <div style="position:relative;top:20%;left:5% ;font-size:x-large;color: #ffffff">中元節特賣</div>
-      <a href="#list"><div class="btn btn-dark" style="height: 50px;width: 200px; position: relative;top:400px;left: 100px">
+      <div style="position:relative;top:20%;left:5% ;font-size:x-large;color: #ffffff;height: 50PX;">中元節特賣</div>
+      <a href="#list" style="position: relative;top:400px;left: 0px;height: 50PX;"><div class="btn btn-dark" style="height: 50px;width: 200px">
         <div style="position:relative;top:20%">SHOPPING NOW</div>
       </div></a>
     </div>

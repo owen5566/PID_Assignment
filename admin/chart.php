@@ -29,8 +29,10 @@
                 <div class = "col"><label for="charts"> 報表類型：</label>
                 <select id="statType"class ="custom-select" name="charts">
                     <option value="1" selected>月銷售額</option>
-                    <option value="2">銷售量</option>
-                    <option value="3">還有什麼</option>
+                    <option value="2">商品總銷售額</option>
+                    <option value="3">商品銷售量</option>
+                    <option value="4">商品銷售量/月</option>
+
                 </select></div>
                 <div class="col">
                     <label for="startTime"> 開始時間：</label>
@@ -40,13 +42,15 @@
                     <label for="endTime"> 結束時間：</label>
                     <input id="endTime" name="endTime" type="date"></input>
                 </div>
-                <div id ="btnSubmit" class="btn btn-outline-success col">送出</div>
+                <div id ="btnSubmit" class="btn btn-outline-success col">送出時間</div>
             </form>
         </div>
-            <canvas id="myChart"></canvas>
+            <div id = "chartHere"><canvas id="myChart"></canvas></div>
     </div>
     <script>
         $(function(){
+            let arr = Array();
+            let data;
             document.getElementById('endTime').valueAsDate = new Date();
             $("#btnSubmit").click(function(){
                 data={
@@ -54,23 +58,63 @@
                    endTime:$("#endTime").val(),
                    type: $("#statType :selected").val()
                 }
+                // 抓時間區間內的訂單資料
                 $.ajax({
                 type:"POST",
                 url:"api.php?action=getOrders",
                 data:data
                 }).then(function(e){
-                    let arr= JSON.parse(e);
+                    arr= JSON.parse(e);
                     console.log(arr);
                     let monthSale = {};
-                    arr.forEach(array => {
-                        if(typeof monthSale[`${new Date(array.oDate).getMonth()+1}`]=="undefined"){
-                            console.log("++");
-                            monthSale[`${new Date(array.oDate).getMonth()+1}`]=0;
-                        }
-                        monthSale[`${new Date(array.oDate).getMonth()+1}`]+=parseInt(array.unitPrice*array.qty);
-                    // monthSale[new Date(array.oDate).getMonth()+1].push(array.productId);
+                    makeChart(arr,$("#statType :selected").val());
+                        })
+                    })
+            
+            $("#statType").change(function(){
+                makeChart(arr,$("#statType :selected").val());
+            })
+            //資料處理 製圖
+            function makeChart(inputArr,type){
+                $("#chartHere").html("<canvas id='myChart'></canvas>")//reset
+                var ctx = document.getElementById('myChart').getContext('2d');
+                
+                let monthArr=[];
+                let monthStr=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+                if(type==1){
+                    let monthSale = {};
+                    for(i=new Date(data["startTime"]).getMonth();i<new Date(data["endTime"]).getMonth()+1;i++){
+                        monthSale[`${i}`]=0
+                        monthArr.push(monthStr[i])
+                    }
+                    inputArr.forEach(array => {
+                        //group by month
+                        monthSale[`${new Date(array.oDate).getMonth()}`]+=parseInt(array.unitPrice*array.qty);
                     });
-                    console.log(Object.values(monthSale));
+                    // (Object.keys(monthSale)).forEach(element=>{
+                    //     monthArr.push(monthStr[parseInt(element)]);
+                    // })
+                    var chart = new Chart(ctx, {
+                          "type": "line",
+                          "data": { 
+                              "labels": monthArr,
+                              "datasets": [{ "label": "月銷售額(TWD)",
+                                             "data": Object.values(monthSale),
+                                             "fill": false,
+                                             "borderColor": "rgb(75, 192, 192)", "lineTension": 0.1 }] },
+                              "options": {} });                    
+                              return;
+                }else if(type==2){
+                    let productSale={};
+                    inputArr.forEach(array=>{
+                        if(typeof productSale[`${array.pName}`]=="undefined"){
+                            // console.log("++");
+                            productSale[`${array.pName}`]=0;
+                        }
+                        productSale[`${array.pName}`]+=parseInt(array.unitPrice*array.qty);
+                        
+                    });
+                    console.log(Object.keys(productSale));
                     var ctx = document.getElementById('myChart').getContext('2d');
                     var chart = new Chart(ctx, {
                         // The type of chart we want to create
@@ -78,21 +122,99 @@
 
                         // The data for our dataset
                         data: {
-                            labels: Object.keys(monthSale),
+                            labels: Object.keys(productSale),
+                            
                             datasets: [{
-                                label: 'My First dataset',
-                                backgroundColor: 'rgb(255, 99, 132)',
-                                borderColor: 'rgb(255, 99, 132)',
-                                data: Object.values(monthSale)
+                                label: '銷售額(NTD)',
+                                backgroundColor: '#F4A7B9',
+                                borderColor: '#F4A7B9',
+                                fill: false,
+                                data: Object.values(productSale)
                             }]
                         },
 
                         // Configuration options go here
                         options: {}
                     });
+                    return;
+                }else if(type==3){
+                    let productSale={};
+                    inputArr.forEach(array=>{
+                        if(typeof productSale[`${array.pName}`]=="undefined"){
+                            console.log("++");
+                            productSale[`${array.pName}`]=0;
+                        }
+                        productSale[`${array.pName}`]+=parseInt(array.qty);
+                        
+                    });
+                    console.log(Object.keys(productSale));
+                    var ctx = document.getElementById('myChart').getContext('2d');
+
+                    var chart = new Chart(ctx, {
+                        // The type of chart we want to create
+                        type: 'bar',
+
+                        // The data for our dataset
+                        data: {
+                            labels: Object.keys(productSale),
+                            
+                            datasets: [{
+                                label: '銷售量',
+                                backgroundColor: '#91AD70',
+                                borderColor: '#227D51',
+                                fill: false,
+                                data: Object.values(productSale)
+                            }]
+                        },
+
+                        // Configuration options go here
+                        options: {}
+                    });
+                }else if(type==4){
+                    let mixData ={};
+                    //Ｘ軸欄位名稱
+                    for(i=new Date(data["startTime"]).getMonth();i<new Date(data["endTime"]).getMonth()+1;i++){
+                                monthArr.push(monthStr[i]);
+                            }
+                    inputArr.forEach(array=>{
+                        if(typeof mixData[`${array.pName}`]=="undefined"){
+                            console.log("++");
+                            mixData[`${array.pName}`]={};
+                            for(i=new Date(data["startTime"]).getMonth();i<new Date(data["endTime"]).getMonth()+1;i++){
+                                mixData[`${array.pName}`][`${i}`]=0
+                            }
+                        }
+                        
+                        mixData[`${array.pName}`][`${new Date(array.oDate).getMonth()}`]+=parseInt(array.qty);
+                       
+                    });
+                        console.log(mixData);
+                        datasets=Array();
+                        Object.keys(mixData).forEach(function(key){
+                            datasets.push(
+                                {
+                                    label: key,
+                                    data: Object.values(mixData[key]),
+                                    type: 'line',
+                                    "fill": false,
+                                    
+                                    // this dataset is drawn on top
+                                    order: 3
+                                }
+                            )
                         })
-                    })
-        
+                        console.log(datasets);
+                        var mixedChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            datasets: datasets,
+                            labels: monthArr
+                        },
+                        options: {}
+                    });
+
+                }
+            }
         })
     </script>
 </body>
